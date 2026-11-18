@@ -112,6 +112,24 @@
   .search input::placeholder { color: var(--muted); }
   .search input:focus { outline: none; border-color: var(--accent); }
 
+  .notice {
+    margin: -4px 0 24px;
+    padding: 12px 14px;
+    color: #8f1d1d;
+    background: #fff4f4;
+    border: 1px solid #f1c5c5;
+    border-left: 4px solid #d93030;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  :root[data-theme="dark"] .notice {
+    color: #ffb4b4;
+    background: #2a1919;
+    border-color: #593131;
+    border-left-color: #ef6b6b;
+  }
+
   .filters {
     display: flex;
     flex-wrap: wrap;
@@ -208,6 +226,8 @@
     <input id="q" type="search" placeholder="Qidirish" aria-label="Havolalar ichidan qidirish" autocomplete="off">
   </div>
 
+  <aside class="notice" id="siteNotice" role="note"></aside>
+
   <nav class="filters" id="filters" aria-label="Bo‘limlar"></nav>
 
   <main id="list"></main>
@@ -220,7 +240,8 @@
 
 var SITE = {
   title: "Havolalar",
-  subtitle: "Kerakli material, test va resurslarni shu yerdan toping."
+  subtitle: "Kerakli material, test va resurslarni shu yerdan toping.",
+  notice: "Ushbu havolalardagi javob variantlarining 100 % to‘g‘riligi kafolatlanmaydi. Ustozingiz bilan maslahatlashishingiz tavsiya etiladi."
 };
 
 /*
@@ -252,9 +273,11 @@ var LINKS = [
   var elFilters = document.getElementById("filters");
   var elQ = document.getElementById("q");
   var elTheme = document.getElementById("themeBtn");
+  var elNotice = document.getElementById("siteNotice");
 
   document.getElementById("siteTitle").textContent = SITE.title;
   document.getElementById("siteSubtitle").textContent = SITE.subtitle;
+  elNotice.textContent = SITE.notice;
   document.title = SITE.title;
 
   /* ---- Mavzu (yorug‘ / qorong‘i) ---- */
