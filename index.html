@@ -353,12 +353,6 @@
     border-color: var(--pill-active-bg);
   }
 
-  .filter-count {
-    font-size: 11.5px;
-    font-variant-numeric: tabular-nums;
-    opacity: 0.65;
-  }
-
   /* ---- Link Sections ---- */
   section {
     margin-bottom: 28px;
@@ -444,36 +438,11 @@
     line-height: 1.45;
   }
 
-  .item-meta {
-    flex: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--muted);
-  }
-
   .host {
+    flex: none;
     font-size: 12.5px;
     color: var(--muted);
     white-space: nowrap;
-  }
-
-  .arrow {
-    width: 15px;
-    height: 15px;
-    stroke: currentColor;
-    fill: none;
-    stroke-width: 1.8;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    opacity: 0.55;
-    transition: transform 0.15s ease, color 0.15s ease, opacity 0.15s ease;
-  }
-
-  a.item:hover .arrow {
-    color: var(--accent);
-    opacity: 1;
-    transform: translate(2px, -2px);
   }
 
   /* ---- Empty State ---- */
@@ -572,10 +541,6 @@
 
     .host {
       display: none;
-    }
-
-    .arrow {
-      margin-top: 3px;
     }
 
     .search-kbd {
@@ -758,31 +723,13 @@ var LINKS = [
     return n;
   }
 
-  function arrowSvg() {
-    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute("class", "arrow");
-    svg.setAttribute("viewBox", "0 0 24 24");
-    svg.setAttribute("aria-hidden", "true");
-    svg.innerHTML = '<line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline>';
-    return svg;
-  }
-
   /* ---- Bo‘limlar tugmalari ---- */
   function renderFilters() {
     elFilters.textContent = "";
-    var queryMatched = LINKS.filter(matchesQuery);
-
     [ALL].concat(categories()).forEach(function (c) {
-      var count = c === ALL
-        ? queryMatched.length
-        : queryMatched.filter(function (l) { return l.category === c; }).length;
-
-      var b = el("button", "filter-btn");
+      var b = el("button", "filter-btn", c);
       b.type = "button";
       b.setAttribute("aria-pressed", String(state.category === c));
-      b.appendChild(el("span", "", c));
-      b.appendChild(el("span", "filter-count", String(count)));
-
       b.addEventListener("click", function () {
         state.category = c;
         renderFilters();
@@ -846,11 +793,8 @@ var LINKS = [
         if (l.desc) body.appendChild(el("p", "desc", l.desc));
         a.appendChild(body);
 
-        var meta = el("div", "item-meta");
         var h = host(l.url);
-        if (h) meta.appendChild(el("span", "host", h));
-        meta.appendChild(arrowSvg());
-        a.appendChild(meta);
+        if (h) a.appendChild(el("span", "host", h));
 
         li.appendChild(a);
         ul.appendChild(li);
